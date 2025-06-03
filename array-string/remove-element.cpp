@@ -1,9 +1,9 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 // 🟠 Approach 1: 
 // Time Complexity: O(n)+O(n)
 // Space Complexity: O(1)
-
-#include <bits/stdc++.h>
-using namespace std;
 
 class Solution {
 public:

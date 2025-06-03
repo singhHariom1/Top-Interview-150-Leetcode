@@ -1,9 +1,9 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 // 🟠 Approach 1: Extra Array (Brute Force)
 // Time Complexity: O(m + n)
 // Space Complexity: O(m + n)
-
-#include <bits/stdc++.h>
-using namespace std;
 
 class Solution {
 public:
