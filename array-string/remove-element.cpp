@@ -28,7 +28,7 @@ public:
     }
 };
 
-// 🟢 Approach 2: Optimal In-Place 
+// 🟢 Approach 2: Optimal In-Place (Two Pointers)
 // Time Complexity: O(n)
 // Space Complexity: O(1)
 
