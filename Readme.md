@@ -52,7 +52,7 @@ top-interview-150/
 ## 🏆 Progress Tracker
 
 ✅ Total Problems: **150**  
-📌 Completed: **44 / 150**  
+📌 Completed: **78 / 150**  
 🚀 Ongoing...
 
 ---
