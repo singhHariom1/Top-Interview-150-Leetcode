@@ -4,48 +4,66 @@ using namespace std;
 // Definition for singly-linked list.
 struct ListNode {
     int val;
-    ListNode* next;
-    ListNode(int x) : val(x), next(NULL) {}
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-// 🟠 Approach 1: Brute Force
-// Time Complexity: O(n)
-// Space Complexity: O(1)
+// 🟠 Approach 1: Brute Force (Using Array + Sorting)
+// Time Complexity: O((n + m) log(n + m))
+// Space Complexity: O(n + m)
 class Solution_Brute {
 public:
-    ListNode* middleNode(ListNode* head) {
-        int length = 0;
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        vector<int> mergedArray;
+        
+        while (list1) {
+            mergedArray.push_back(list1->val);
+            list1 = list1->next;
+        }
+        while (list2) {
+            mergedArray.push_back(list2->val);
+            list2 = list2->next;
+        }
+
+        if (mergedArray.empty()) return NULL;
+
+        sort(mergedArray.begin(), mergedArray.end());
+
+        ListNode* head = new ListNode(mergedArray[0]);
         ListNode* temp = head;
-
-        // First pass: find length
-        while (temp) {
-            length++;
+        for (int i = 1; i < mergedArray.size(); i++) {
+            temp->next = new ListNode(mergedArray[i]);
             temp = temp->next;
         }
-
-        // Second pass: reach middle
-        temp = head;
-        for (int i = 0; i < length / 2; i++) {
-            temp = temp->next;
-        }
-
-        return temp;
+        return head;
     }
 };
 
-// 🟢 Approach 2: Optimal (Slow & Fast Pointers)
-// Time Complexity: O(n)
+// 🟢 Approach 2: Optimal (Two-Pointer Merge In-Place)
+// Time Complexity: O(n + m)
 // Space Complexity: O(1)
 class Solution_Optimal {
 public:
-    ListNode* middleNode(ListNode* head) {
-        ListNode* slow = head;
-        ListNode* fast = head;
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode dummy(0); // Dummy node to simplify pointer handling
+        ListNode* tail = &dummy;
 
-        while (fast && fast->next) {
-            slow = slow->next;
-            fast = fast->next->next;
+        while (list1 && list2) {
+            if (list1->val <= list2->val) {
+                tail->next = list1;
+                list1 = list1->next;
+            } else {
+                tail->next = list2;
+                list2 = list2->next;
+            }
+            tail = tail->next;
         }
-        return slow;
+
+        // Attach the remaining list
+        tail->next = (list1) ? list1 : list2;
+
+        return dummy.next;
     }
 };
