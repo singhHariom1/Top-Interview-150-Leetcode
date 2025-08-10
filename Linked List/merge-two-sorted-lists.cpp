@@ -108,5 +108,41 @@ Step-by-step merge:
 dummy -> 1(list1) -> 1(list2) -> 2(list1) -> 3(list2) -> 4(list1) -> 4(list2)
 Return dummy.next
 
-Output: [1,1,2,3,4,4]
+merge([1,2,4], [1,3,4])
+│
+├── choose 1 (from list1)
+│   list1->next = merge([2,4], [1,3,4])
+│
+│   ├── merge([2,4], [1,3,4])
+│   │
+│   ├── choose 1 (from list2)
+│   │   list2->next = merge([2,4], [3,4])
+│   │
+│   │   ├── merge([2,4], [3,4])
+│   │   │
+│   │   ├── choose 2 (from list1)
+│   │   │   list1->next = merge([4], [3,4])
+│   │   │
+│   │   │   ├── merge([4], [3,4])
+│   │   │   │
+│   │   │   ├── choose 3 (from list2)
+│   │   │   │   list2->next = merge([4], [4])
+│   │   │   │
+│   │   │   │   ├── merge([4], [4])
+│   │   │   │   │
+│   │   │   │   ├── choose 4 (from list1)
+│   │   │   │   │   list1->next = merge(NULL, [4])
+│   │   │   │   │
+│   │   │   │   │   ├── Base case → return [4]
+│   │   │   │   │
+│   │   │   │   └── returns [4 -> 4]
+│   │   │   │
+│   │   │   └── returns [3 -> 4 -> 4]
+│   │   │
+│   │   └── returns [2 -> 3 -> 4 -> 4]
+│   │
+│   └── returns [1 -> 2 -> 3 -> 4 -> 4]
+│
+└── returns [1 -> 1 -> 2 -> 3 -> 4 -> 4]
+
 */
