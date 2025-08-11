@@ -44,6 +44,7 @@ top-interview-150/
 │── math/
 │── dp-1d/
 │── dp-multidimensional/
+│── data-structures-and-algorithms/
 │── README.md
 ```
 
@@ -52,7 +53,7 @@ top-interview-150/
 ## 🏆 Progress Tracker
 
 ✅ Total Problems: **150**  
-📌 Completed: **80 / 150**  
+📌 Completed: **81 / 150**  
 🚀 Ongoing...
 
 ---
