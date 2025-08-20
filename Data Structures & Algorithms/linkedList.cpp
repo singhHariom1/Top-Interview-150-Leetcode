@@ -1,144 +1,91 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Node
-{
+struct Node {
     int val;
-    Node *next;
+    Node* next;
     Node(int x) : val(x), next(NULL) {}
 };
 
-class LinkedList
-{
+class LinkedList {
 private:
-    Node *head;
-
-    // Helper to expose head
-    Node *getHead()
-    {
-        return head;
-    }
-
-    // Helper to set head
-    void setHead(Node *newHead)
-    {
-        head = newHead;
-    }
+    Node* head;
 
 public:
-    LinkedList()
-    {
+    LinkedList() {
         head = NULL;
     }
 
+    Node* getHead() { return head; }
+    void setHead(Node* newHead) { head = newHead; }
+
     // 1️⃣ Insert at head
-    void insertAtHead(int x)
-    {
-        Node *newNode = new Node(x);
+    void insertAtHead(int x) {
+        Node* newNode = new Node(x);
         newNode->next = head;
         head = newNode;
     }
 
     // 2️⃣ Insert at tail
-    void insertAtTail(int x)
-    {
-        Node *newNode = new Node(x);
-        // If list is empty
-        if (head == NULL)
-        {
-            head = newNode;
-            return;
-        }
-
-        Node *temp = head;
-        while (temp->next != NULL)
-        {
-            temp = temp->next;
-        }
+    void insertAtTail(int x) {
+        Node* newNode = new Node(x);
+        if (!head) { head = newNode; return; }
+        Node* temp = head;
+        while (temp->next) temp = temp->next;
         temp->next = newNode;
     }
 
     // 3️⃣ Delete head
-    void deleteHead()
-    {
-        // If list is empty
-        if (head == NULL)
-            return;
-
-        Node *temp = head;
+    void deleteHead() {
+        if (!head) return;
+        Node* temp = head;
         head = head->next;
         delete temp;
     }
 
     // 4️⃣ Delete tail
-    void deleteTail()
-    {
-        // If list is empty
-        if (head == NULL)
-            return;
-
-        // If list has only one element
-        if (head->next == NULL)
-        {
-            delete head;
-            head = NULL;
-            return;
-        }
-
-        Node *temp = head;
-        while (temp->next->next != NULL)
-        {
-            temp = temp->next;
-        }
+    void deleteTail() {
+        if (!head) return;
+        if (!head->next) { delete head; head = NULL; return; }
+        Node* temp = head;
+        while (temp->next->next) temp = temp->next;
         delete temp->next;
         temp->next = NULL;
     }
 
-    // 5️⃣ Search for a value
-    bool search(int key)
-    {
-        Node *temp = head;
-        while (temp != NULL)
-        {
-            if (temp->val == key)
-                return true;
+    // 5️⃣ Search
+    bool search(int key) {
+        Node* temp = head;
+        while (temp) {
+            if (temp->val == key) return true;
             temp = temp->next;
         }
         return false;
     }
 
-    // 6️⃣ Display linked list
-    void display()
-    {
-        Node *temp = head;
-        while (temp != NULL)
-        {
+    // 6️⃣ Display
+    void display() {
+        Node* temp = head;
+        while (temp) {
             cout << temp->val << " ";
             temp = temp->next;
         }
     }
 
     // 7️⃣ Count nodes
-    int count()
-    {
-        int count = 0;
-        Node *temp = head;
-        while (temp != NULL)
-        {
-            count++;
-            temp = temp->next;
-        }
-        return count;
+    int count() {
+        int cnt = 0;
+        Node* temp = head;
+        while (temp) { cnt++; temp = temp->next; }
+        return cnt;
     }
 
-    // 8️⃣ Reverse linked list
-    void reverse()
-    {
-        Node *prev = NULL;
-        Node *curr = head;
-        while (curr != NULL)
-        {
-            Node *nextNode = curr->next;
+    // 8️⃣ Reverse whole list
+    void reverse() {
+        Node* prev = NULL;
+        Node* curr = head;
+        while (curr) {
+            Node* nextNode = curr->next;
             curr->next = prev;
             prev = curr;
             curr = nextNode;
@@ -146,101 +93,205 @@ public:
         head = prev;
     }
 
-    // 9️⃣ Find middle node
-    int findMiddle()
-    {
-        Node *slow = head;
-        Node *fast = head;
-        while (fast && fast->next)
-        {
+    // 9️⃣ Middle
+    int findMiddle() {
+        Node* slow = head;
+        Node* fast = head;
+        while (fast && fast->next) {
             slow = slow->next;
             fast = fast->next->next;
         }
-        return slow->val;
+        return slow ? slow->val : -1;
     }
 
-    // 🔟 Detect cycle (Floyd’s algorithm)
-    bool hasCycle()
-    {
-        Node *slow = head;
-        Node *fast = head;
-        while (fast && fast->next)
-        {
+    // 🔟 Detect cycle
+    bool hasCycle() {
+        Node* slow = head;
+        Node* fast = head;
+        while (fast && fast->next) {
             slow = slow->next;
             fast = fast->next->next;
-            if (slow == fast)
-                return true;
+            if (slow == fast) return true;
         }
         return false;
     }
 
-    // 1️⃣1️⃣ Remove duplicates from sorted list
-    void removeDuplicates()
-    {
-        Node *temp = head;
-        while (temp && temp->next)
-        {
-            if (temp->val == temp->next->val)
-            {
-                Node *duplicate = temp->next;
-                temp->next = duplicate->next;
-                delete duplicate;
-            }
-            else
-            {
-                temp = temp->next;
-            }
+    // 1️⃣1️⃣ Remove duplicates (sorted)
+    void removeDuplicates() {
+        Node* temp = head;
+        while (temp && temp->next) {
+            if (temp->val == temp->next->val) {
+                Node* dup = temp->next;
+                temp->next = dup->next;
+                delete dup;
+            } else temp = temp->next;
         }
     }
 
-    // 1️⃣2️⃣ Delete node with specific value
-    void deleteValue(int key)
-    {
-        if (head == NULL)
-            return;
-        if (head->val == key)
-        {
-            deleteHead();
-            return;
-        }
-
-        Node *temp = head;
-        while (temp->next != NULL && temp->next->val != key)
-        {
-            temp = temp->next;
-        }
-
-        if (temp->next != NULL)
-        {
-            Node *toDelete = temp->next;
+    // 1️⃣2️⃣ Delete value
+    void deleteValue(int key) {
+        if (!head) return;
+        if (head->val == key) { deleteHead(); return; }
+        Node* temp = head;
+        while (temp->next && temp->next->val != key) temp = temp->next;
+        if (temp->next) {
+            Node* toDel = temp->next;
             temp->next = temp->next->next;
-            delete toDelete;
+            delete toDel;
         }
     }
 
-    // // 1️⃣3️⃣ Reverse in K groups
-    // void reverseKGroup(int k) {};
+    // 1️⃣3️⃣ Reverse in k-groups
+    Node* reverseK(Node* h, int k) {
+        Node* prev = NULL;
+        Node* curr = h;
+        Node* nxt = NULL;
+        int cnt = 0;
+        Node* temp = h;
+        for (int i=0;i<k && temp;i++) temp=temp->next;
+        if (!temp && cnt<k-1) return h; // less than k left
+        while (curr && cnt < k) {
+            nxt = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nxt;
+            cnt++;
+        }
+        if (nxt) h->next = reverseK(nxt, k);
+        return prev;
+    }
+    void reverseKGroup(int k) { head = reverseK(head, k); }
 
-    // // 1️⃣4️⃣ Check if the list is a palindrome
-    // bool isPalindrome() {};
+    // 1️⃣4️⃣ Palindrome check
+    bool isPalindrome() {
+        if (!head || !head->next) return true;
+        // find mid
+        Node* slow = head;
+        Node* fast = head;
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        // reverse second half
+        Node* prev = NULL;
+        Node* curr = slow;
+        while (curr) {
+            Node* nxt = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nxt;
+        }
+        Node* left = head;
+        Node* right = prev;
+        while (right) {
+            if (left->val != right->val) return false;
+            left = left->next;
+            right = right->next;
+        }
+        return true;
+    }
 
-    // // 1️⃣5️⃣ Remove N-th node from end
-    // void removeNthFromEnd(int n) {};
+    // 1️⃣5️⃣ Remove Nth from end
+    void removeNthFromEnd(int n) {
+        Node* dummy = new Node(0);
+        dummy->next = head;
+        Node* first = dummy;
+        Node* second = dummy;
+        for (int i=0;i<=n;i++) first=first->next;
+        while (first) {
+            first=first->next;
+            second=second->next;
+        }
+        Node* del = second->next;
+        second->next = second->next->next;
+        if (del == head) head = head->next;
+        delete del;
+        head = dummy->next;
+        delete dummy;
+    }
 
-    // // 1️⃣6️⃣ Merge two sorted linked lists
-    // void mergeSortedLists(Node *otherHead) {};
+    // 1️⃣6️⃣ Merge two sorted lists
+    void mergeSortedLists(Node* otherHead) {
+        Node dummy(0);
+        Node* tail = &dummy;
+        Node* l1 = head;
+        Node* l2 = otherHead;
+        while (l1 && l2) {
+            if (l1->val < l2->val) { tail->next = l1; l1=l1->next; }
+            else { tail->next = l2; l2=l2->next; }
+            tail=tail->next;
+        }
+        tail->next = l1?l1:l2;
+        head = dummy.next;
+    }
 
-    // // 1️⃣7️⃣ Detect and remove cycle
-    // void detectAndRemoveCycle() {};
+    // 1️⃣7️⃣ Detect + remove cycle
+    void detectAndRemoveCycle() {
+        if (!head) return;
+        Node* slow = head;
+        Node* fast = head;
+        bool hasC = false;
+        while (fast && fast->next) {
+            slow=slow->next;
+            fast=fast->next->next;
+            if (slow==fast) { hasC=true; break; }
+        }
+        if (!hasC) return;
+        slow=head;
+        while (slow!=fast) { slow=slow->next; fast=fast->next; }
+        while (fast->next!=slow) fast=fast->next;
+        fast->next=NULL;
+    }
 
-    // // 1️⃣8️⃣ Find intersection point of two linked lists
-    // Node *getIntersectionNode(Node *headA, Node *headB) {};
+    // 1️⃣8️⃣ Intersection of 2 lists
+    Node* getIntersectionNode(Node* headA, Node* headB) {
+        if (!headA || !headB) return NULL;
+        Node* a = headA;
+        Node* b = headB;
+        while (a != b) {
+            a = a ? a->next : headB;
+            b = b ? b->next : headA;
+        }
+        return a;
+    }
 
-    // // 1️⃣9️⃣ Sort the linked list (Merge Sort)
-    // Node *mergeSort(Node *head) {}; // Call from wrapper inside class if needed
+    // 1️⃣9️⃣ Merge sort list
+    Node* merge(Node* l1, Node* l2) {
+        Node dummy(0); Node* tail=&dummy;
+        while (l1 && l2) {
+            if (l1->val < l2->val) { tail->next=l1; l1=l1->next; }
+            else { tail->next=l2; l2=l2->next; }
+            tail=tail->next;
+        }
+        tail->next = l1?l1:l2;
+        return dummy.next;
+    }
+    Node* mergeSortUtil(Node* h) {
+        if (!h || !h->next) return h;
+        Node* slow=h; Node* fast=h->next;
+        while (fast && fast->next) { slow=slow->next; fast=fast->next->next; }
+        Node* mid=slow->next; slow->next=NULL;
+        Node* left=mergeSortUtil(h);
+        Node* right=mergeSortUtil(mid);
+        return merge(left,right);
+    }
+    Node* mergeSort(Node* h) { return mergeSortUtil(h); }
 
-    // // 2️⃣0️⃣ Rotate linked list by k places
-    // void rotateRight(int k) {};
+    // 2️⃣0️⃣ Rotate right by k
+    void rotateRight(int k) {
+        if (!head || !head->next || k==0) return;
+        int len=1;
+        Node* tail=head;
+        while (tail->next) { tail=tail->next; len++; }
+        k%=len;
+        if (k==0) return;
+        tail->next=head; // make cycle
+        int steps=len-k;
+        Node* newTail=head;
+        for (int i=1;i<steps;i++) newTail=newTail->next;
+        head=newTail->next;
+        newTail->next=NULL;
+    }
 };
 
 int main()
@@ -275,52 +326,52 @@ int main()
     cout << endl;
 
     // 1️⃣3️⃣ Reverse in K groups
-    // list.reverseKGroup(2);
-    // cout << "After reverse in K groups: ";
-    // list.display();
-    // cout << endl;
+    list.reverseKGroup(2);
+    cout << "After reverse in K groups: ";
+    list.display();
+    cout << endl;
 
     // 1️⃣4️⃣ Check if palindrome
-    // cout << "Is Palindrome? " << (list.isPalindrome() ? "Yes" : "No") << endl;
+    cout << "Is Palindrome? " << (list.isPalindrome() ? "Yes" : "No") << endl;
 
     // 1️⃣5️⃣ Remove N-th node from end
-    // list.removeNthFromEnd(2);
-    // cout << "After removing N-th node from end: ";
-    // list.display();
-    // cout << endl;
+    list.removeNthFromEnd(2);
+    cout << "After removing N-th node from end: ";
+    list.display();
+    cout << endl;
 
     // 1️⃣6️⃣ Merge two sorted lists
-    // LinkedList other;
-    // other.insertAtTail(15);
-    // other.insertAtTail(35);
-    // list.mergeSortedLists(other.getHead());
-    // cout << "After merging with another sorted list: ";
-    // list.display();
-    // cout << endl;
+    LinkedList other;
+    other.insertAtTail(15);
+    other.insertAtTail(35);
+    list.mergeSortedLists(other.getHead());
+    cout << "After merging with another sorted list: ";
+    list.display();
+    cout << endl;
 
     // 1️⃣7️⃣ Detect and remove cycle
-    // Node* head = list.getHead();
-    // head->next->next->next = head;  // Creating a cycle
-    // cout << "Cycle present? " << (list.hasCycle() ? "Yes" : "No") << endl;
-    // list.detectAndRemoveCycle();
-    // cout << "Cycle after removal? " << (list.hasCycle() ? "Yes" : "No") << endl;
+    Node* head = list.getHead();
+    head->next->next->next = head;  // Creating a cycle
+    cout << "Cycle present? " << (list.hasCycle() ? "Yes" : "No") << endl;
+    list.detectAndRemoveCycle();
+    cout << "Cycle after removal? " << (list.hasCycle() ? "Yes" : "No") << endl;
 
     // 1️⃣8️⃣ Find intersection point
     // (You’ll need to simulate intersection manually if needed)
 
     // 1️⃣9️⃣ Merge sort the linked list
-    // Node* sorted = list.mergeSort(list.getHead());
-    // LinkedList sortedList;
-    // sortedList.setHead(sorted);
-    // cout << "Sorted List: ";
-    // sortedList.display();
-    // cout << endl;
+    Node* sorted = list.mergeSort(list.getHead());
+    LinkedList sortedList;
+    sortedList.setHead(sorted);
+    cout << "Sorted List: ";
+    sortedList.display();
+    cout << endl;
 
     // 2️⃣0️⃣ Rotate by k places
-    // list.rotateRight(2);
-    // cout << "After rotating by 2 places: ";
-    // list.display();
-    // cout << endl;
+    list.rotateRight(2);
+    cout << "After rotating by 2 places: ";
+    list.display();
+    cout << endl;
 
     return 0;
 }
